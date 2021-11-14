@@ -5,7 +5,7 @@ echo "Ton Mining Tools processing ..."
 giver_address="kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF"
 my_address="EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO"
 global_config="/opt/ton-miner/global.config.json"
-ton_miner="/opt/ton-miner/tonlib-cuda-cli"
+ton_miner="/opt/ton-miner/tonlib-opencl-cli"
 miner=7
 # Update system path
 apt-get update && apt-get upgrade
