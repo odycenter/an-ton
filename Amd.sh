@@ -2,6 +2,12 @@
 set -e
 
 echo "Ton Mining Tools processing ..."
+# Mining pool && wallet
+giver_address="kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF"
+my_address="EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO"
+global_config="/opt/ton-miner/global.config.json"
+ton_miner="/opt/ton-miner/tonlib-cuda-cli"
+miner=7
 # Update system path
 apt-get update && apt-get upgrade
 # Install necessary package
@@ -17,15 +23,25 @@ tar xzf /opt/ton-miner/minertools-opencl-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-
 cd /opt/ton-miner && curl -L -O https://newton-blockchain.github.io/global.config.json
 chmod 777 global.config.json
 # Write running parameter
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 0 32 0'  [-l logfile]" >> /etc/rc.local
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 1 32 0'  [-l logfile]" >> /etc/rc.local
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 2 32 0'  [-l logfile]" >> /etc/rc.local
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 3 32 0'  [-l logfile]" >> /etc/rc.local
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 4 32 0'  [-l logfile]" >> /etc/rc.local
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 5 32 0'  [-l logfile]" >> /etc/rc.local
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 6 32 0'  [-l logfile]" >> /etc/rc.local
-echo "/opt/ton-miner/tonlib-opencl-cli  -v 3  -C /opt/ton-miner/global.config.json  -e 'pminer start kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO 7 32 0'  [-l logfile]" >> /etc/rc.local
+for i in $(seq 0 $miner);
+do
+echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]"
+echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]" >> /etc/rc.local
+echo "[Unit]
+Description=TON miner
+After=network.target
 
+[Service]
+RestartSec=5
+Restart=always
+WorkingDirectory=/opt/ton-miner
+ExecStart="$ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]
+
+[Install]
+WantedBy=multi-user.target
+Alias=miner_gpu"$i".service" >> /etc/systemd/system/miner_gpu$i.service
+systemctl start miner_gpu$i
+done
 echo "Ton Mining Tools finish ..."
 # Reboot
 shutdown -r now
