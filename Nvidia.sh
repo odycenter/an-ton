@@ -32,7 +32,7 @@ sed -i -e '$i \tail -f /var/log/syslog &\n' /etc/rc.local
 wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh
 chmod 777 DailyDownload.sh
 echo "# Crontab download global.config.json"
-echo "* 15    * * *    root    bash /home/user/DailyDownload.sh"
+echo "* 15    * * *    root    bash /opt/ton-miner/DailyDownload.sh"
 # Write running parameter
 for i in $(seq 0 $miner);
 do
