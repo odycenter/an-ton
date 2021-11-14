@@ -18,7 +18,7 @@ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/
 sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
 sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
 sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /"
-apt-get install nvidia-settings cuda-drivers-495 cuda-runtime-11-5 cuda-demo-suite-11-5 cuda-11-5 cuda
+apt-get install sudo vim wget curl systemd git nvidia-settings cuda-drivers-495 cuda-runtime-11-5 cuda-demo-suite-11-5 cuda-11-5 cuda
 # Download mining package
 wget https://github.com/tontechio/pow-miner-gpu/releases/download/20211112-3/minertools-cuda-ubuntu-18.04-x86-64.tar.gz
 # Unzip mining package
@@ -26,11 +26,16 @@ tar xzf /opt/ton-miner/minertools-cuda-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-mi
 # Download Config (Need to re-download once a week)
 curl -L -O https://newton-blockchain.github.io/global.config.json
 chmod 777 global.config.json
+# Show mining log when start
+sed -i -e '$i \tail -f /var/log/syslog &\n' /etc/rc.local
+# Crontab download global.config.json
+wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh
+chmod 777 DailyDownload.sh
+echo "# Crontab download global.config.json"
+echo "* 15    * * *    root    bash /home/user/DailyDownload.sh"
 # Write running parameter
 for i in $(seq 0 $miner);
 do
-# echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]"
-# echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]" >> /etc/rc.local
 echo "[Unit]
 Description=TON miner
 After=network.target
@@ -44,8 +49,7 @@ ExecStart="$ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address
 [Install]
 WantedBy=multi-user.target
 Alias=miner_gpu"$i".service" >> /etc/systemd/system/miner_gpu$i.service
-# systemctl enable miner_gpu$i
-# systemctl start miner_gpu$i
+chmod 777 /etc/systemd/system/miner_gpu$i.service
 done
 echo "Ton Mining Tools finish ..."
 # Reboot

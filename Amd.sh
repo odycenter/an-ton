@@ -11,7 +11,7 @@ miner=7
 # Update system path
 apt-get update && apt-get upgrade
 # Install necessary package
-apt-get install sudo vim wget curl git sudo opencl-headers ocl-icd-libopencl1 ocl-icd-opencl-dev
+apt-get install sudo vim wget curl systemd git opencl-headers ocl-icd-libopencl1 ocl-icd-opencl-dev
 # Set mining folder
 sudo mkdir -p /opt/ton-miner/
 cd /opt/ton-miner/
@@ -22,6 +22,13 @@ tar xzf /opt/ton-miner/minertools-opencl-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-
 # Download Config (Need to re-download once a week)
 cd /opt/ton-miner && curl -L -O https://newton-blockchain.github.io/global.config.json
 chmod 777 global.config.json
+# Show mining log when start
+sed -i -e '$i \tail -f /var/log/syslog &\n' /etc/rc.local
+# Crontab download global.config.json
+wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh
+chmod 777 DailyDownload.sh
+echo "# Crontab download global.config.json"
+echo "* 15    * * *    root    bash /home/user/DailyDownload.sh"
 # Write running parameter
 for i in $(seq 0 $miner);
 do
@@ -40,8 +47,7 @@ ExecStart="$ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address
 [Install]
 WantedBy=multi-user.target
 Alias=miner_gpu"$i".service" >> /etc/systemd/system/miner_gpu$i.service
-# systemctl enable miner_gpu$i
-# systemctl start miner_gpu$i
+chmod 777 /etc/systemd/system/miner_gpu$i.service
 done
 echo "Ton Mining Tools finish ..."
 # Reboot
