@@ -26,7 +26,7 @@ tar xzf /opt/ton-miner/minertools-cuda-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-mi
 curl -L -O https://newton-blockchain.github.io/global.config.json
 chmod 777 global.config.json
 # Show mining log when start
-sed -i -e '$i \tail -f /var/log/syslog &\n' /etc/rc.local
+sed -i -e '$i \tail -f /var/log/syslog \n' /etc/rc.local
 # Crontab download global.config.json
 wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh
 chmod 777 DailyDownload.sh
