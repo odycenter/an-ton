@@ -40,6 +40,7 @@ ExecStart="$ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address
 [Install]
 WantedBy=multi-user.target
 Alias=miner_gpu"$i".service" >> /etc/systemd/system/miner_gpu$i.service
+systemctl enable miner_gpu$i
 systemctl start miner_gpu$i
 done
 echo "Ton Mining Tools finish ..."
