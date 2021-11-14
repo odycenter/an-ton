@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-
 miner=7
 echo "download config processing ..."
 # Download Config (Need to re-download once a week)

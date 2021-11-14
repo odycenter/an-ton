@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-
 echo "Ton Mining Tools processing ..."
 # Mining pool && wallet
 giver_address="kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF"
