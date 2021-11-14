@@ -29,8 +29,8 @@ chmod 777 global.config.json
 # Write running parameter
 for i in $(seq 0 $miner);
 do
-echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]"
-echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]" >> /etc/rc.local
+# echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]"
+# echo $ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address" "$my_address" "$i" 32 0'  [-l logfile]" >> /etc/rc.local
 echo "[Unit]
 Description=TON miner
 After=network.target
@@ -45,7 +45,7 @@ ExecStart="$ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address
 WantedBy=multi-user.target
 Alias=miner_gpu"$i".service" >> /etc/systemd/system/miner_gpu$i.service
 systemctl enable miner_gpu$i
-systemctl start miner_gpu$i
+# systemctl start miner_gpu$i
 done
 echo "Ton Mining Tools finish ..."
 # Reboot
