@@ -16,16 +16,16 @@ fi
 cd /opt/ton-miner
 # Install Nvidia cuda
 if [[ ! -e "/opt/ton-miner/cuda-ubuntu1804.pin" ]]; then
-    apt-get install gnupg gnupg2 software-properties-common
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
+    apt-get install gnupg gnupg2 software-properties-common wget
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin --no-check-certificate
     sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
     sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
     sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /"
-    apt-get install sudo vim wget curl systemd git ntp  nvidia-settings cuda-drivers-495 cuda-runtime-11-5 cuda-demo-suite-11-5 cuda-11-5 cuda
+    apt-get install sudo vim curl systemd git ntp  nvidia-settings cuda-drivers-495 cuda-runtime-11-5 cuda-demo-suite-11-5 cuda-11-5 cuda
 fi
 # Download mining package
 if [[ ! -e "/opt/ton-miner/minertools-cuda-ubuntu-18.04-x86-64.tar.gz" ]]; then
-    wget https://github.com/tontechio/pow-miner-gpu/releases/download/20211112-3/minertools-cuda-ubuntu-18.04-x86-64.tar.gz
+    wget https://github.com/tontechio/pow-miner-gpu/releases/download/20211112-3/minertools-cuda-ubuntu-18.04-x86-64.tar.gz --no-check-certificate
     # Unzip mining package
     tar xzf /opt/ton-miner/minertools-cuda-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-miner/
 fi
@@ -40,7 +40,7 @@ sed -i -e '$i \tail -f /var/log/syslog \n' /etc/rc.local
 if [[ -e "/opt/ton-miner/DailyDownload.sh" ]]; then
     rm -rf DailyDownload.sh
 fi
-wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh
+wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh --no-check-certificate
 chmod 777 DailyDownload.sh
 echo "# Crontab download global.config.json" >> /etc/crontab
 echo "* 15    * * *    root    bash /opt/ton-miner/DailyDownload.sh" >> /etc/crontab

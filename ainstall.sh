@@ -18,7 +18,7 @@ fi
 cd /opt/ton-miner/
 # Download mining package
 if [[ ! -e "minertools-opencl-ubuntu-18.04-x86-64.tar.gz" ]]; then
-    wget https://github.com/tontechio/pow-miner-gpu/releases/download/20211112-3/minertools-opencl-ubuntu-18.04-x86-64.tar.gz
+    wget https://github.com/tontechio/pow-miner-gpu/releases/download/20211112-3/minertools-opencl-ubuntu-18.04-x86-64.tar.gz --no-check-certificate
     # Unzip mining package
     tar xzf /opt/ton-miner/minertools-opencl-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-miner/
 fi
@@ -33,7 +33,7 @@ sed -i -e '$i \tail -f /var/log/syslog \n' /etc/rc.local
 if [[ -e "/opt/ton-miner/DailyDownload.sh" ]]; then
     rm -rf DailyDownload.sh
 fi
-wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh
+wget https://raw.githubusercontent.com/odycenter/an-ton/main/DailyDownload.sh --no-check-certificate
 chmod 777 DailyDownload.sh
 echo "# Crontab download global.config.json" >> /etc/crontab
 echo "* 15    * * *    root    bash /opt/ton-miner/DailyDownload.sh" >> /etc/crontab
