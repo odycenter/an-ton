@@ -10,7 +10,9 @@ miner=7
 # Update system path
 apt-get update && apt-get upgrade
 # Set mining folder
-sudo mkdir -p /opt/ton-miner
+if [[ ! -f "/opt/ton-miner/" ]]; then
+    sudo mkdir -p /opt/ton-miner/
+fi
 cd /opt/ton-miner
 # Install Nvidia cuda
 if [[ ! -e "/opt/ton-miner/cuda-ubuntu1804.pin" ]]; then
