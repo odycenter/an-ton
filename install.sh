@@ -75,6 +75,7 @@ ExecStart="$ton_miner" -v 3 -C "$global_config" -e 'pminer start "$giver_address
 WantedBy=multi-user.target
 Alias=miner_gpu"$i".service" >> /etc/systemd/system/miner_gpu$i.service
 chmod 777 /etc/systemd/system/miner_gpu$i.service
+sudo systemctl enable miner_gpu$i.service
 done
 echo "Ton Mining Tools finish ..."
 # Reboot
