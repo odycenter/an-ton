@@ -2,7 +2,8 @@
 set -e
 echo "Ton Mining Tools processing ..."
 # Mining pool && wallet
-giver_address="Uf_hLYWdlWIvlceh2YMYku3P6OFGECQGiyz_US6c-Wc3hwkF"
+giver_address="kf8kO6K6Qh6YM4ddjRYYlvVAK7IgyW8Zet-4ZvNrVsmQ4EOF"
+# giver_address="Uf_hLYWdlWIvlceh2YMYku3P6OFGECQGiyz_US6c-Wc3hwkF"
 my_address="EQACwiacIj-gfKXapcZmnOoX9G54t1rhAZUkq1L92VpmtVjO"
 global_config="/opt/ton-miner/global.config.json"
 # (for Nvidia)
