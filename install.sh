@@ -9,10 +9,14 @@ ton_miner="/opt/ton-miner/tonlib-cuda-cli"
 miner=7
 # Update system path
 apt-get update && apt-get upgrade
+# Install necessary package (for AMD vga)
+apt-get install sudo vim wget curl systemd git ntp opencl-headers ocl-icd-libopencl1 ocl-icd-opencl-dev
 # Set mining folder
-sudo mkdir -p /opt/ton-miner
+if [[ ! -f "/opt/ton-miner/" ]]; then
+    sudo mkdir -p /opt/ton-miner/
+fi
 cd /opt/ton-miner
-# Install Nvidia cuda
+# Install Nvidia cuda (for Nvidia vga)
 if [[ ! -e "/opt/ton-miner/cuda-ubuntu1804.pin" ]]; then
     apt-get install gnupg gnupg2 software-properties-common
     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
