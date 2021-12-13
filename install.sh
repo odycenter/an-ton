@@ -31,6 +31,12 @@ if [[ ! -e "/opt/ton-miner/minertools-cuda-ubuntu-18.04-x86-64.tar.gz" ]]; then
     # Unzip mining package
     tar xzf /opt/ton-miner/minertools-cuda-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-miner/
 fi
+# Download mining package
+if [[ ! -e "minertools-opencl-ubuntu-18.04-x86-64.tar.gz" ]]; then
+    wget https://github.com/tontechio/pow-miner-gpu/releases/download/20211112-3/minertools-opencl-ubuntu-18.04-x86-64.tar.gz
+    # Unzip mining package
+    tar xzf /opt/ton-miner/minertools-opencl-ubuntu-18.04-x86-64.tar.gz -C /opt/ton-miner/
+fi
 # Download Config (Need to re-download once a week)
 if [[ ! -e "/opt/ton-miner/global.config.json" ]]; then
     curl -L -O https://newton-blockchain.github.io/global.config.json
